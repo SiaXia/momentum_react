@@ -1,12 +1,17 @@
 import React, { Component } from "react";
-// import imgs from './images/1.jpg';
 
-class BackGrounds extends Component {
-    render() {
-        return(
-            <img src={ require('./images/1.jpg') } width='12' height='12'/>
-        );
-    }
+class BackGround extends Component {
+  render() {
+    const IMG_NUMBER = 7;
+    const rand = Math.floor(Math.random() * IMG_NUMBER);
+    return (
+      <img
+        src={require("./images/" + rand + ".jpg").default}
+        width="100%"
+        height="100%"
+      />
+    );
+  }
 }
 
-export default BackGrounds;
+export default BackGround;
