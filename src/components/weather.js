@@ -1,4 +1,8 @@
 import React, { Component } from "react";
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import WhereToVoteOutlinedIcon from '@material-ui/icons/WhereToVoteOutlined';
 
 const API_KEY = "b5c5ad4ff919824094b5a49029ffaa72",
   COORDS = "coords",
@@ -19,7 +23,7 @@ class Weather extends Component {
       .then(function (json) {
         const temperature = json.main.temp;
         const place = json.name;
-        localStorage.setItem(WEATHER_INFO,`${temperature} @ ${place}` );
+        localStorage.setItem(WEATHER_INFO,`${temperature}°C ${place}` );
       });
   };
 
@@ -59,11 +63,19 @@ class Weather extends Component {
     }
   };
   render() {
+   
     this.loadCoords();
     return (
+      <React.Fragment>
+      <CssBaseline />
+      <Container maxWidth="m">
+      <Typography align="right" component="div" style={{ backgroundColor: 'none', height: '5vh',opacity: '0.6'}} >
       <div>
-        <h3>{localStorage.getItem(WEATHER_INFO)}</h3>
+        <h3 style={{color:'white'}}>{localStorage.getItem(WEATHER_INFO)}</h3>
       </div>
+      </Typography>
+      </Container>
+    </React.Fragment>
     );
   }
 }

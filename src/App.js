@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import BackGround from "./components/bg";
 import Greetings from "./components/greetings";
 import Weather from "./components/weather";
+import Clocks from "./components/clock";
 import "./App.css";
 import { TextField } from "@material-ui/core";
 import Todo from "./components/todo";
@@ -13,9 +14,12 @@ class App extends Component {
         <bg>
           <BackGround />
         </bg>
+        <clock>
+        <Clocks></Clocks>
+        </clock>
         <Greetings></Greetings>
-        <Weather></Weather>
         <Todo></Todo>
+        <Weather></Weather>
       </div>
     );
   }

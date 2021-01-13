@@ -1,8 +1,39 @@
 import React, { Component } from "react";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 const TODOS_LS = "toDos";
-
+const ValidationTextField = withStyles({
+  root: {
+    "& input:valid + fieldset": {
+      borderColor: "green",
+      borderWidth: 2,
+    },
+    "& input:invalid + fieldset": {
+      borderColor: "black",
+      borderWidth: 2,
+    },
+    "& input:valid:focus + fieldset": {
+      borderLeftWidth: 6,
+      padding: "4px !important", // override inline-style
+    },
+  },
+})(TextField);
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  margin: {
+    margin: theme.spacing(1),
+  },
+}));
 let toDos = [];
-
 class Todo extends Component {
   constructor(props) {
     super(props);
@@ -10,7 +41,9 @@ class Todo extends Component {
     this.inputRef = React.createRef();
     this.listRef = React.createRef();
   }
-
+  state = {
+    toDo: "",
+  };
   deleteToDo = (event) => {
     const btn = event.target;
     const li = btn.parentNode;
@@ -28,15 +61,16 @@ class Todo extends Component {
 
   paintToDo = (text) => {
     const li = document.createElement("li");
-    const delBtn = document.createElement("button");
+    const delBtn = document.createElement("iconButton");
     const span = document.createElement("span");
     const newId = toDos.length + 1;
     delBtn.innerHTML = "❌";
     delBtn.addEventListener("click", this.deleteToDo);
     span.innerText = text;
+    li.appendChild(delBtn);
     li.appendChild(span);
     li.id = newId;
-    li.appendChild(delBtn);
+
     this.listRef.current.appendChild(li);
 
     const toDoObj = {
@@ -50,9 +84,9 @@ class Todo extends Component {
   handleSubmit = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      const currentValue = this.inputRef.current.value;
+      const currentValue = event.target.value;
       this.paintToDo(currentValue);
-      this.inputRef.current.value = "";
+      event.target.value = "";
     }
   };
 
@@ -68,17 +102,38 @@ class Todo extends Component {
   render() {
     //this.loadToDos(this);
     // this.formRef.addEventListener("submit", this.handleSubmit);
+
     return (
       <div>
-        <form ref={this.formRef}>
-          <input
-            ref={this.inputRef}
-            type="text"
-            placeholder="Write something to do"
-            onKeyPress={this.handleSubmit}
-          />
-        </form>
-        <ul ref={this.listRef}></ul>
+        {localStorage.getItem("currentUser") ? (
+          <React.Fragment>
+            <CssBaseline />
+            <Container maxWidth="sm">
+              <Typography
+                align="center"
+                component="div"
+                style={{
+                  backgroundColor: "white",
+                  height: "10vh",
+                  opacity: "0.6",
+                }}
+              >
+                <form ref={this.formRef}>
+                  <ValidationTextField
+                    ref={this.inputRef}
+                    className={useStyles.margin}
+                    label="Write something to do"
+                    required
+                    variant="outlined"
+                    id="validation-outlined-input"
+                    onKeyPress={this.handleSubmit}
+                  />
+                </form>
+              </Typography>
+            </Container>
+            <ul ref={this.listRef} style={{fontSize:'20px'}}>to-To List</ul>
+          </React.Fragment>
+        ) : null}
       </div>
     );
   }

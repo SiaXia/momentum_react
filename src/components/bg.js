@@ -6,6 +6,7 @@ class BackGround extends Component {
     const rand = Math.floor(Math.random() * IMG_NUMBER);
     return (
       <img
+        id="bg"
         src={require("./images/" + rand + ".jpg").default}
         width="100%"
         height="100%"
